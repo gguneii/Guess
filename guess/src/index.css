@@ -1,5 +1,14 @@
 @import "tailwindcss";
 
-.underline{
+.underline {
     text-decoration-skip-ink: none;
 }
+
+/* .scrollbar::-webkit-scrollbar {
+    margin-top: 10px;
+}
+
+.scrollbar::-webkit-scrollbar-thumb {
+    background-color: #888;
+    border-radius: 6px;
+} */

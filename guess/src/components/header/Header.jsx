@@ -62,10 +62,16 @@ function Header() {
             </li>
             <li onClick={handleBurgerMenu} className="lg:hidden">
               <GiHamburgerMenu className="w-[28px] h-[24px] lg:w-[43px] lg:h-[34px] cursor-pointer" />
+            </li>
+          </ul>
+        </div>
+      </nav>
 
-              {menu && (
-                <ul className="fixed left-0 bg-white w-full h-full p-4">
-                  <li className="p-[15px] border-b border-[#eee]">
+      <div>
+            {menu && (
+                <ul className="fixed left-0 bg-white w-full h-full p-4 z-[999] top-[0]">
+                  <li onClick={handleBurgerMenu} className="absolute top-2 right-6 font-bold text-[24px] text-black cursor-pointer">X</li>
+                  <li className="p-[15px] border-b mt-[20px] border-[#eee]">
                     Hi,
                     <a
                       className="underline py-[16px] pr-[31px] space-x-2 font-semibold"
@@ -104,10 +110,7 @@ function Header() {
                   </li>
                 </ul>
               )}
-            </li>
-          </ul>
-        </div>
-      </nav>
+            </div>
     </div>
   );
 }
