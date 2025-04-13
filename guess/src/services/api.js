@@ -1,9 +1,9 @@
 import axiosInstance from "./instance";
 
-// async function getAllMenus() {
-//     const res = await axiosInstance.get("/menus")
-//     return res.data
-// }
+async function getAllCategories() {
+    const res = await axiosInstance.get("/categories/all")
+    return res.data
+}
 // async function getAllDetails() {
 //     const res = await axiosInstance.get("/details")
 //     return res.data
@@ -14,3 +14,4 @@ import axiosInstance from "./instance";
 // }
 
 // export {getAllMenus, getAllDetails , getAllGifts}
+export {getAllCategories}

@@ -70,6 +70,9 @@ function Main() {
         </div>
       </div>
 
+      
+      {/* Imgler olan hisseler  */}
+
       <div className="flex py-10">
         <img
           className="max-w-[33%]"
@@ -87,7 +90,7 @@ function Main() {
           alt="canta"
         />
       </div>
-      
+
       <div className="flex items-center overflow-x-auto">
         <div className="flex flex-col items-center min-w-[187px] max-w-[480px]">
           <img
