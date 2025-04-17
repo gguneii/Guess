@@ -1,22 +1,34 @@
-import { IoIosSearch, IoMdHeartEmpty, IoIosArrowForward } from "react-icons/io";
+import {
+  IoIosSearch,
+  IoMdHeartEmpty,
+  IoIosArrowForward,
+  IoMdClose,
+} from "react-icons/io";
 import { BiBasket } from "react-icons/bi";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { useContext, useState } from "react";
 import { DATA } from "../../context/DataContext";
-import { Link } from "react-router";
+import { Link, useParams } from "react-router";
 
 function Header() {
   const { category } = useContext(DATA);
   const [menu, setMenu] = useState(false);
+  const {catId} = useParams() 
+  const {product}= useContext(DATA);
+
+  // function allProduct(){
+  //     if(catId){
+  //         return product.filter((item) => item.id == catId)
+  //     }
+  // }
+
   function handleBurgerMenu() {
     setMenu(!menu);
   }
 
-  const [activeIndex, setActiveIndex] = useState(null);
-
   return (
     <div>
-      <nav className="flex justify-between items-center bg-white shadow-md p-4">
+      <nav className="flex justify-between items-center bg-white shadow-md p-2">
         <div className="flex items-center">
           <a href="/" className="logo w-[100px] mr-[24px]">
             <img
@@ -25,145 +37,65 @@ function Header() {
               alt="logo"
             />
           </a>
-          <ul className="items-center max-w-[970px] w-full justify-start gap-4 pl-[15px] hidden lg:flex">
-            {category &&
-              category.map((item, i) => (
-                <li
-                  key={i}
-                  onMouseEnter={() => setActiveIndex(i)}
-                  onMouseLeave={() => setActiveIndex(null)}
-                >
-                  <Link to={"/"}>{item.name}</Link>
-                </li>
-              ))}
+
+          <ul className="hidden lg:flex">
+            {category
+              ? category.map((item, i) => (
+                  <li
+                    key={i}
+                    className="group text-[.875rem] hover:underline border-b border-b-transparent hover:border-b-[#000] py-4 tracking-[.2em] px-3 cursor-pointer "
+                  >
+                    {item.name}
+                    <div className="absolute w-full top-[57px] left-0 group-hover:block hidden z-50 p-[30px] bg-[#fff] ">
+                      <div className="flex">
+                        <ul className="!px-[80px]">
+                          <Link to={`/product/all/${item.id}`}>
+                            <li className="font-[600] pb-[8px] hover:underline">
+                              View all
+                            </li>
+                          </Link>
+                          {item.Subcategory.map((s, i) => {
+                            return (
+                              <Link key={i} to={`/product/${s.id}`}>
+                                <li className="py-[8px] hover:underline">
+                                  {s.name}
+                                </li>
+                              </Link>
+                            );
+                          })}
+                        </ul>
+                        <img
+                          className="w-[384px]"
+                          src={`/assets/img/headerList${i}.webp`}
+                          alt="img"
+                        />
+                      </div>
+                    </div>
+                  </li>
+                ))
+              : ""}
           </ul>
-
-          {/* <div className="absolute top-[66px] left-0 w-full bg-white z-[5]">
-
-            <div className="flex gap-[25px] ml-34 w-full bg-white pb-8">
-              <div>
-                <h4 className="font-semibold pb-2">All Handbags</h4>
-                <a href="/" className="text-[13px] block">
-                  View All
-                </a>
-                <a href="/" className="text-[13px] block">
-                  New Arrivals
-                </a>
-                <a href="/" className="text-[13px] block">
-                  The It Bag
-                </a>
-                <a href="/" className="text-[13px] block">
-                  CrossBodies
-                </a>
-                <a href="/" className="text-[13px] block">
-                  Shoulder Bags
-                </a>
-                <a href="/" className="text-[13px] block">
-                  Evening Bags
-                </a>
-                <a href="/" className="text-[13px] block">
-                  Totes
-                </a>
-                <a href="/" className="text-[13px] block">
-                  Wallets
-                </a>
-                <a href="/" className="text-[13px] block">
-                  Travels Techs
-                </a>
-                <a href="/" className="text-[13px] block">
-                  Logo Bags
-                </a>
-              </div>
-            </div>
-
-            <div className="flex gap-[25px] ml-34 w-full bg-white pb-8">
-              <div>
-                <h4 className="font-semibold pb-2">All Handbags</h4>
-                <a href="/" className="text-[13px] block">
-                  View All
-                </a>
-                <a href="/" className="text-[13px] block">
-                  New Arrivals
-                </a>
-                <a href="/" className="text-[13px] block">
-                  The It Bag
-                </a>
-                <a href="/" className="text-[13px] block">
-                  CrossBodies
-                </a>
-                <a href="/" className="text-[13px] block">
-                  Shoulder Bags
-                </a>
-                <a href="/" className="text-[13px] block">
-                  Evening Bags
-                </a>
-                <a href="/" className="text-[13px] block">
-                  Totes
-                </a>
-                <a href="/" className="text-[13px] block">
-                  Wallets
-                </a>
-                <a href="/" className="text-[13px] block">
-                  Travels Techs
-                </a>
-                <a href="/" className="text-[13px] block">
-                  Logo Bags
-                </a>
-              </div>
-            </div>
-
-          </div> */}
         </div>
-        {category &&
-          category.map((item, i) => (
-            <div
-              key={item.id}
-              className={`absolute top-[66px] left-0 w-full bg-white z-[5] transition-all duration-300 ${
-                activeIndex === i
-                  ? "opacity-100 visible"
-                  : "opacity-0 invisible"
-              }`}
-              onMouseEnter={() => setActiveIndex(i)}
-              onMouseLeave={() => setActiveIndex(null)}
-            >
-              <div className="flex gap-[25px] ml-34 w-full bg-white pb-8 pl-6">
-                <div>
-                  <h4 className="font-semibold pb-2">
-                    {item.name} Subcategories
-                  </h4>
-                  {item.Subcategory?.map((sub) => (
-                    <Link
-                      key={sub.id}
-                      to={`/subcategory/${sub.slug}`}
-                      className="text-[13px] block hover:underline"
-                    >
-                      {sub.name}
-                    </Link>
-                  ))}
-                </div>
-              </div>
-            </div>
-          ))}
 
         <div className="flex items-center">
           <p className="hidden lg:block">
             Hi,
             <a
-              className="underline border-r py-[16px] pr-[31px] space-x-2 font-semibold"
+              className="tracking-[.05em] underline pl-[3px] border-r py-[16px] pr-[31px] space-x-2 font-semibold"
               href="/"
             >
               Sign in or Register
             </a>
           </p>
           <ul className="flex items-center gap-4 pl-[16px]">
-            <li className="">
-              <IoIosSearch className="w-[28px] h-[24px] lg:w-[43px] lg:h-[34px]" />
+            <li>
+              <IoIosSearch className="w-[28px] h-[24px] lg:w-[43px] lg:h-[30px]" />
             </li>
             <li>
-              <IoMdHeartEmpty className="w-[28px] h-[24px] lg:w-[43px] lg:h-[34px]" />
+              <IoMdHeartEmpty className="w-[28px] h-[24px] lg:w-[43px] lg:h-[30px]" />
             </li>
             <li>
-              <BiBasket className="w-[28px] h-[24px] lg:w-[43px] lg:h-[34px]" />
+              <BiBasket className="w-[28px] h-[24px] lg:w-[43px] lg:h-[30px]" />
             </li>
             <li onClick={handleBurgerMenu} className="lg:hidden">
               <GiHamburgerMenu className="w-[28px] h-[24px] lg:w-[43px] lg:h-[34px] cursor-pointer" />

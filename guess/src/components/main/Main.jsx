@@ -69,7 +69,6 @@ function Main() {
           </a>
         </div>
       </div>
-
       
       {/* Imgler olan hisseler  */}
 
