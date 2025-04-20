@@ -6,21 +6,13 @@ import {
 } from "react-icons/io";
 import { BiBasket } from "react-icons/bi";
 import { GiHamburgerMenu } from "react-icons/gi";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { DATA } from "../../context/DataContext";
 import { Link, useParams } from "react-router";
 
 function Header() {
   const { category } = useContext(DATA);
   const [menu, setMenu] = useState(false);
-  const {catId} = useParams() 
-  const {product}= useContext(DATA);
-
-  // function allProduct(){
-  //     if(catId){
-  //         return product.filter((item) => item.id == catId)
-  //     }
-  // }
 
   function handleBurgerMenu() {
     setMenu(!menu);

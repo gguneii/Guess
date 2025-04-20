@@ -5,8 +5,9 @@ async function getAllCategories() {
     return res.data
 }
 
- async function getAllProducts(){
-    const res = await axiosInstance.get("/products/all")
+ async function getAllProducts(catId){
+    const res = await axiosInstance.get(`/products/all?categoryId=${catId}`)
+    // const res = await axiosInstance.get(`/products/all?categoryId=${catId}&limit=${5}`)
     return res.data
 }
 
