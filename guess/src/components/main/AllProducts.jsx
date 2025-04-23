@@ -1,6 +1,5 @@
 import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router";
-import { DATA } from "../../context/DataContext";
 import { CiHeart } from "react-icons/ci";
 import { getAllProducts } from "../../services/api";
 
@@ -12,8 +11,18 @@ function AllProducts() {
     color: false,
     discount: false,
     price: false,
+    wiew: false,
+    featured: false,
   };
   const [filter, setFilter] = useState(initialObj);
+  const [displayedProducts, setDisplayedProducts] = useState([]);
+
+  useEffect(() => {
+    setDisplayedProducts(products?.slice(0, 10));
+  }, [products]);
+  function viewProducts(num) {
+    setDisplayedProducts(products.slice(0, num));
+  }
 
   const [allFilters, setAllFilters] = useState({
     sizes: [],
@@ -44,7 +53,10 @@ function AllProducts() {
           <span>(28 styles)</span>
           <div className="flex gap-[15px]">
             <div className="flex items-center relative max-1024:hidden">
-              <div className="flex items-center cursor-pointer">
+              <div
+                onClick={() => setFilter({ ...filter, view: !filter.view })}
+                className="flex items-center cursor-pointer"
+              >
                 <span className="underline">View 10</span>
                 <svg
                   stroke="currentColor"
@@ -59,17 +71,24 @@ function AllProducts() {
                   <path d="M256 294.1L383 167c9.4-9.4 24.6-9.4 33.9 0s9.3 24.6 0 34L273 345c-9.1 9.1-23.7 9.3-33.1.7L95 201.1c-4.7-4.7-7-10.9-7-17s2.3-12.3 7-17c9.4-9.4 24.6-9.4 33.9 0l127.1 127z"></path>
                 </svg>
               </div>
-              <div className="bg-white border  absolute top-[33px] left-0 w-[100px] z-10 hidden">
-                <p className="py-[5px]  px-[20px] hover:bg-gray-100 cursor-pointer">
-                  Viwe 5
-                </p>
-                <p className="py-[5px] px-[20px] hover:bg-gray-100 cursor-pointer">
-                  Viwe 10
-                </p>
-                <p className="py-[5px] px-[20px] hover:bg-gray-100 cursor-pointer">
-                  Viwe 15
-                </p>
-              </div>
+              {filter.view && (
+                <div className="bg-white border  absolute top-[33px] left-0 w-[100px] z-10">
+                  {[5, 10, 15].map((num) => {
+                    return (
+                      <p
+                        key={num}
+                        onClick={() => {
+                          viewProducts(num),
+                            setFilter({ ...filter, view: false });
+                        }}
+                        className="py-[5px] px-[20px] hover:bg-gray-100 cursor-pointer"
+                      >
+                        View {num}
+                      </p>
+                    );
+                  })}
+                </div>
+              )}
             </div>
             <div className="flex items-center max-1024:hidden ">
               <svg
@@ -114,7 +133,12 @@ function AllProducts() {
               <span className="cursor-pointer px-[5px]">6</span>
             </div>
             <div className="">
-              <p className=" cursor-pointer flex items-center underline max-1024:hidden ">
+              <p
+                onClick={() =>
+                  setFilter({ ...filter, featured: !filter.featured })
+                }
+                className=" cursor-pointer flex items-center underline max-1024:hidden "
+              >
                 Featured
                 <svg
                   stroke="currentColor"
@@ -129,14 +153,20 @@ function AllProducts() {
                   <path d="M256 294.1L383 167c9.4-9.4 24.6-9.4 33.9 0s9.3 24.6 0 34L273 345c-9.1 9.1-23.7 9.3-33.1.7L95 201.1c-4.7-4.7-7-10.9-7-17s2.3-12.3 7-17c9.4-9.4 24.6-9.4 33.9 0l127.1 127z"></path>
                 </svg>
               </p>
-              <div className="bg-white border  z-40 absolute top-[23px] w-full left-0   hidden">
-                <p className="py-[5px] px-[10px]  hover:bg-gray-100  cursor-pointer">
-                  Price: low to high
-                </p>
-                <p className="py-[5px] px-[10px]  hover:bg-gray-100  cursor-pointer">
-                  Price: high to low
-                </p>
-              </div>
+              {filter.featured && (
+                <div className="bg-white border  z-40 absolute top-[23px] w-full left-0">
+                  <p 
+                  onClick={() => setFilter({ ...filter, featured: false })}
+                  className="py-[5px] px-[10px]  hover:bg-gray-100  cursor-pointer">
+                    Price: low to high
+                  </p>
+                  <p
+                  onClick={() => setFilter({ ...filter, featured: false })}
+                  className="py-[5px] px-[10px]  hover:bg-gray-100  cursor-pointer">
+                    Price: high to low
+                  </p>
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -438,9 +468,17 @@ function AllProducts() {
                       </svg>
                     )}
                   </div>
-                  <span 
-                  onClick={() => setAllFilters({...allFilters, discount:!allFilters.discount})}
-                  className="text-[14px] cursor-pointer">Discount</span>
+                  <span
+                    onClick={() =>
+                      setAllFilters({
+                        ...allFilters,
+                        discount: !allFilters.discount,
+                      })
+                    }
+                    className="text-[14px] cursor-pointer"
+                  >
+                    Discount
+                  </span>
                 </div>
               </div>
             )}
@@ -534,7 +572,7 @@ function AllProducts() {
                         <span>200$</span>
                       </div>
                     </div>
-                    <div className="flex  cursor-pointer items-center my-[8px]">
+                    <div className="flex cursor-pointer items-center my-[8px]">
                       <div className="w-[16px] flex items-center justify-center h-[16px]  rounded-[50%] border border-black mr-[10px]">
                         <svg
                           stroke="currentColor"
@@ -584,7 +622,7 @@ function AllProducts() {
                         <span>$</span>
                         <input
                           type="number"
-                          className="w-[35px]  inp-price outline-none"
+                          className="w-[35px] inp-price outline-none"
                         />
                       </div>
                       <svg
@@ -619,10 +657,10 @@ function AllProducts() {
 
         <div className="w-[80%]">
           <div className="flex flex-wrap justify-center items-center gap-[16px]">
-            {products &&
-              products.map((item, i) => {
+            {displayedProducts &&
+              displayedProducts.map((item, i) => {
                 return (
-                  <a href="" className="w-[215px]">
+                  <a key={i} href="" className="w-[215px]">
                     <img src="/assets/img/women.webp" alt="" />
                     <div className="flex justify-between items-center mx-[5px] py-[7px]">
                       <p className="text-[15px] tracking-[.5px]">
